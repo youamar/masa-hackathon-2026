@@ -28,6 +28,12 @@ indicators:
   - WB_WDI_AG_LND_FRST_ZS       — Forest area (% of land area)
   - WB_WDI_AG_PRD_CROP_XD       — Crop production index (2014-16 = 100)
 
+LIVE INTERACTIVE DASHBOARD
+https://youamar-masa-hackathon-2026-app-pvja9h.streamlit.app/
+(Drag the three sliders to stress-test 2030 GHG, parametric adoption, and
+forest-conservation uptake — recomputes baseline / stressed / strategy-
+adjusted GHG paths and the financial loss curve in real time.)
+
 SUPPORTING FILES
 - phase1_etl.py            ETL pipeline
 - cleaned_wdi_data.csv     ETL output

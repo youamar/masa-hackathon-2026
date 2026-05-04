@@ -28,53 +28,36 @@ CSS = """
   @frame footer { -pdf-frame-content: footerContent;
                    left: 1in; right: 1in; bottom: 0.5in; height: 0.3in; }
 }
-@page cover {
-  size: A4;
-  margin: 0in 0in 0in 0in;
-}
 body { font-family: Helvetica, Arial, sans-serif; font-size: 12pt;
        line-height: 1.35; color: #111; }
-h1 { font-size: 18pt; margin-top: 14pt; margin-bottom: 6pt;
-     -pdf-keep-with-next: true; }
-h2 { font-size: 14pt; margin-top: 12pt; margin-bottom: 4pt; color: #6b1414;
-     -pdf-keep-with-next: true; }
-h3 { font-size: 12pt; margin-top: 8pt; margin-bottom: 2pt;
-     -pdf-keep-with-next: true; }
+h1 { font-size: 18pt; margin-top: 14pt; margin-bottom: 6pt; }
+h2 { font-size: 14pt; margin-top: 12pt; margin-bottom: 4pt; color: #6b1414; }
+h3 { font-size: 12pt; margin-top: 8pt; margin-bottom: 2pt; }
 p, li { font-size: 12pt; }
-table { border-collapse: collapse; margin: 6pt 0; width: 100%; font-size: 11pt;
-        -pdf-keep-in-frame-mode: shrink; }
+table { border-collapse: collapse; margin: 6pt 0; width: 100%; font-size: 11pt; }
 th, td { border: 1px solid #888; padding: 3pt 6pt; text-align: left; }
 th { background: #f0e6e6; }
 hr { border: none; border-top: 1px solid #999; margin: 10pt 0; }
 img { max-width: 6.0in; margin: 6pt auto; display: block; }
 code { font-family: Consolas, monospace; font-size: 11pt; }
 
-/* Cover page laid out as a vertically-centered table — xhtml2pdf reliably
-   handles vertical alignment inside <td>, unlike flex/margin-auto tricks. */
-.cover-page { page: cover; page-break-after: always; }
-table.cover {
-  width: 100%; height: 11.0in;
-  border: none; margin: 0; padding: 0;
-}
-table.cover td.cover-cell {
-  vertical-align: middle;
-  text-align: center;
-  border: none;
-  padding: 0.8in 1in;
-}
-.cover .badge { font-size: 14pt; color: #6b1414; letter-spacing: 3pt;
-                margin-bottom: 0.4in; }
-.cover h1.title { font-size: 28pt; margin: 0 0 8pt 0; color: #111;
-                  line-height: 1.15; }
-.cover .subtitle { font-size: 14pt; color: #555; margin-bottom: 0.8in;
-                   font-style: italic; }
-.cover .divider { border-top: 2px solid #6b1414; width: 2in; margin: 14pt auto; }
-.cover .label { font-size: 10pt; color: #6b1414; margin-top: 18pt;
-                text-transform: uppercase; letter-spacing: 3pt; font-weight: bold; }
-.cover .team { font-size: 20pt; font-weight: bold; margin-top: 6pt; color: #111; }
-.cover .member { font-size: 13pt; margin-top: 3pt; color: #222; }
-.cover .uni { font-size: 13pt; margin-top: 6pt; color: #222; }
-.cover .date { font-size: 12pt; margin-top: 6pt; color: #555; }
+.cover { text-align: center; }
+.cover .badge { font-size: 14pt; color: #6b1414; margin-top: 1.2in;
+                letter-spacing: 2pt; text-align: center; }
+.cover h1.title { font-size: 28pt; margin-top: 0.5in; margin-bottom: 0.1in;
+                  text-align: center; }
+.cover .subtitle { font-size: 14pt; color: #444; margin-bottom: 1.0in;
+                   text-align: center; }
+.cover .label { font-size: 12pt; color: #6b1414; margin-top: 24pt;
+                text-transform: uppercase; letter-spacing: 2pt;
+                text-align: center; }
+.cover .team { font-size: 18pt; font-weight: bold; margin-top: 4pt;
+               text-align: center; }
+.cover .member { font-size: 13pt; margin-top: 2pt; text-align: center; }
+.cover .uni { font-size: 13pt; margin-top: 6pt; text-align: center; }
+.cover .date { text-align: center; }
+.cover a { text-align: center; }
+.pagebreak { page-break-after: always; }
 """
 
 HTML = f"""<!doctype html>
@@ -85,28 +68,32 @@ HTML = f"""<!doctype html>
   MASA Hackathon 2026 · R-Ignite — Submission by {TEAM_NAME}
 </div>
 
-<div class="cover-page">
-<table class="cover"><tr><td class="cover-cell">
-  <div class="cover">
-    <div class="badge">MASA HACKATHON 2026 &nbsp;·&nbsp; R-IGNITE</div>
-    <h1 class="title">Igniting Agricultural Climate Resilience<br/>in Southeast Asia</h1>
-    <div class="subtitle">A Parametric Reinsurance &amp; Forest-Conservation Hybrid<br/>for Malaysia &amp; Indonesia</div>
-    <div class="divider"></div>
+<div class="cover">
+  <div class="badge">MASA HACKATHON 2026 · R-IGNITE</div>
+  <h1 class="title">Igniting Agricultural Climate Resilience<br/>in Southeast Asia</h1>
+  <div class="subtitle">A Parametric Reinsurance Strategy for Malaysia &amp; Indonesia</div>
 
-    <div class="label">Team</div>
-    <div class="team">{TEAM_NAME}</div>
+  <div class="label">Team</div>
+  <div class="team">{TEAM_NAME}</div>
 
-    <div class="label">Members</div>
-    {members_html}
+  <div class="label">Members</div>
+  {members_html}
 
-    <div class="label">University</div>
-    <div class="uni">{UNIVERSITY}</div>
+  <div class="label">University</div>
+  <div class="uni">{UNIVERSITY}</div>
 
-    <div class="label">Submission Date</div>
-    <div class="date">7 May 2026</div>
+  <div class="label" style="margin-top:48pt;">Submission Date</div>
+  <div class="uni">7 May 2026</div>
+
+  <div class="label" style="margin-top:24pt;">Live Interactive Dashboard</div>
+  <div class="uni" style="font-size:11pt;">
+    <a href="https://youamar-masa-hackathon-2026-app-pvja9h.streamlit.app/"
+       style="color:#6b1414; text-decoration:none;">
+      youamar-masa-hackathon-2026-app-pvja9h.streamlit.app
+    </a>
   </div>
-</td></tr></table>
 </div>
+<div class="pagebreak"></div>
 
 {body_html}
 
