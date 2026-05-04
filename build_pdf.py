@@ -30,9 +30,12 @@ CSS = """
 }
 body { font-family: Helvetica, Arial, sans-serif; font-size: 12pt;
        line-height: 1.35; color: #111; }
-h1 { font-size: 18pt; margin-top: 14pt; margin-bottom: 6pt; }
-h2 { font-size: 14pt; margin-top: 12pt; margin-bottom: 4pt; color: #6b1414; }
-h3 { font-size: 12pt; margin-top: 8pt; margin-bottom: 2pt; }
+h1 { font-size: 18pt; margin-top: 14pt; margin-bottom: 6pt;
+     -pdf-outline: true; -pdf-outline-level: 0; }
+h2 { font-size: 14pt; margin-top: 12pt; margin-bottom: 4pt; color: #6b1414;
+     -pdf-outline: true; -pdf-outline-level: 1; }
+h3 { font-size: 12pt; margin-top: 8pt; margin-bottom: 2pt;
+     -pdf-outline: true; -pdf-outline-level: 2; }
 p, li { font-size: 12pt; }
 table { border-collapse: collapse; margin: 6pt 0; width: 100%; font-size: 11pt; }
 th, td { border: 1px solid #888; padding: 3pt 6pt; text-align: left; }
@@ -58,6 +61,16 @@ code { font-family: Consolas, monospace; font-size: 11pt; }
 .cover .date { text-align: center; }
 .cover a { text-align: center; }
 .pagebreak { page-break-after: always; }
+
+/* Table of contents page */
+.toc-page { page-break-after: always; padding: 0; }
+.toc-page h2.toc-title { color: #6b1414; font-size: 18pt; margin-top: 0;
+               border-bottom: 2px solid #6b1414; padding-bottom: 6pt;
+               margin-bottom: 16pt; }
+.toc-entry { font-size: 12pt; margin: 7pt 0; }
+.toc-entry .num { color: #6b1414; font-weight: bold;
+                  display: inline-block; width: 0.4in; }
+.toc-sub { font-size: 11pt; margin: 4pt 0 4pt 0.5in; color: #555; }
 """
 
 HTML = f"""<!doctype html>
@@ -94,6 +107,24 @@ HTML = f"""<!doctype html>
   </div>
 </div>
 <div class="pagebreak"></div>
+
+<div class="toc-page">
+  <h2 class="toc-title">Table of Contents</h2>
+  <div class="toc-entry"><span class="num"></span>Executive Summary</div>
+  <div class="toc-entry"><span class="num"></span>At-a-Glance: Five Numbers That Matter</div>
+  <div class="toc-entry"><span class="num">1.</span>Problem Framing</div>
+  <div class="toc-entry"><span class="num">2.</span>Implementation &amp; Modelling</div>
+  <div class="toc-entry"><span class="num">3.</span>Testing &amp; Validation</div>
+  <div class="toc-entry"><span class="num">4.</span>Mitigation Strategy &amp; Impact</div>
+  <div class="toc-sub">4.1 Natural Disaster Claims &amp; Protection Gap: Malaysia vs. Indonesia</div>
+  <div class="toc-sub">4.2 Strategy</div>
+  <div class="toc-sub">4.3 Strategy Impact on the Climate Indicator</div>
+  <div class="toc-sub">4.4 Regulatory &amp; Policy Alignment</div>
+  <div class="toc-sub">4.5 Stress-Adoption Sensitivity Grid</div>
+  <div class="toc-entry"><span class="num">5.</span>Limitations &amp; Next Steps</div>
+  <div class="toc-entry"><span class="num"></span>References</div>
+  <div class="toc-entry"><span class="num"></span>AI Usage Acknowledgement</div>
+</div>
 
 {body_html}
 
