@@ -1,0 +1,18 @@
+# Raw 254 MB WDI dump — too big for GitHub. Cleaned CSV is committed instead.
+WB_WDI_WIDEF.csv
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Streamlit local state
+.streamlit/secrets.toml

@@ -1,0 +1,220 @@
+================================================================
+MASA HACKATHON 2026 · R-IGNITE — VERCEL SUBMISSION PORTAL
+Copy-paste-ready responses
+================================================================
+
+
+================================================================
+SECOND PART: PROJECT DETAILS
+================================================================
+
+PROJECT TITLE
+Igniting Agricultural Climate Resilience in Southeast Asia:
+A Parametric Reinsurance + Forest-Conservation Hybrid for Malaysia & Indonesia
+
+TOOLS & TECHNICAL STACK
+- Language: Python 3.12
+- Data engineering: pandas, numpy
+- Modelling: numpy.polyfit (quadratic OLS), out-of-sample backtesting
+- Visualisation: matplotlib (static charts in report), Streamlit (interactive dashboard)
+- Reporting: markdown + xhtml2pdf (PDF render with 1in margins, 12pt body)
+- Reproducibility: requirements.txt, fully scripted ETL -> Model -> App pipeline
+
+DATASET SOURCE
+World Bank World Development Indicators (WDI), Wide format SDMX CSV
+(Data360 / WB_WDI). Filtered to Malaysia (MYS) and Indonesia (IDN) on three
+indicators:
+  - WB_WDI_EN_GHG_ALL_MT_CE_AR5 — Total GHG emissions excl. LULUCF (Mt CO2e, AR5)
+  - WB_WDI_AG_LND_FRST_ZS       — Forest area (% of land area)
+  - WB_WDI_AG_PRD_CROP_XD       — Crop production index (2014-16 = 100)
+
+SUPPORTING FILES
+- phase1_etl.py            ETL pipeline
+- cleaned_wdi_data.csv     ETL output
+- phase2_model.py          modelling + chart generation
+- model_metrics.json       serialised model outputs
+- figures/*.png            embedded report charts
+- app.py                   Streamlit interactive dashboard
+- MASA_Hackathon_Report.pdf final report
+- README.md                setup, replication, AI usage documentation
+- requirements.txt         pinned dependencies
+
+EXECUTIVE SUMMARY (also Page 1 of report body)
+Climate risk in Southeast Asia is mispriced because the dominant property-and-
+casualty narrative under-weights the agricultural channel — precisely where
+Malaysia and Indonesia carry the largest macro exposure. Our Blue Ocean thesis
+pivots the client from indemnity-based catastrophe cover to a hybrid programme
+of PARAMETRIC AGRICULTURAL REINSURANCE plus an NDVI-triggered FOREST-CONSERVATION
+rider that simultaneously absorbs financial loss and bends the GHG path
+downward. Using a quadratic OLS baseline trained on 1970-2023 World Bank WDI
+data, our model predicts 2024 GHG emissions for Malaysia within 5.36% MAPE
+(10.58% for Indonesia) — strong out-of-sample validation. Historical correlation
+between greenhouse-gas intensity and the Crop Production Index is +0.978 (MYS)
+and +0.972 (IDN), evidencing a structural climate-agriculture linkage that
+parametric triggers can monetise. Under a +20% 2030 GHG stress and 40%
+parametric adoption, the live Streamlit simulator projects parametric cover
+absorbing roughly 34% of the cumulative agri-GDP loss along the 2024-2030 path
+while conservation uptake reduces the stressed GHG path itself.
+
+
+
+
+
+----------------------------------------------------------------
+1. PROJECT SETUP
+----------------------------------------------------------------
+Southeast Asia is the structural blind spot of climate reinsurance.
+While the industry has crowded into flood and property catastrophe
+modelling, the region's largest underwritten exposure — agriculture —
+remains chronically under-insured against drought, heat stress, and
+shifting monsoon onsets. Agriculture contributes roughly 12% of
+Indonesia's and 7% of Malaysia's GDP, yet smallholder farms cannot
+access traditional indemnity cover because loss adjustment is
+uneconomic, settlement is too slow to fund the next planting cycle,
+and information asymmetry pushes premiums above willingness-to-pay.
+
+For our reinsurance client, this gap is not just a social issue — it
+is a long-term financial-resilience problem: uninsured agricultural
+losses cascade into sovereign-credit pressure, currency volatility,
+and correlated downgrades across the rest of the regional book.
+
+Our project addresses this head-on with a Blue Ocean pivot to
+PARAMETRIC REINSURANCE for agricultural climate risk in Malaysia and
+Indonesia. The work is squarely aligned with the R-Ignite theme:
+we use World Bank WDI data to quantify the climate-to-agriculture
+linkage, build a validated baseline model of greenhouse-gas
+trajectory, and translate the result into a live, decision-grade
+stress-test simulator the client can use today.
+
+
+----------------------------------------------------------------
+2. IMPLEMENTATION
+----------------------------------------------------------------
+Architecture: a three-stage Python pipeline (ETL → Model → App),
+fully reproducible, no external services required.
+
+ETL (phase1_etl.py). We ingest the WDI wide-format SDMX CSV
+(~1,500 indicators × 217 economies × 65 years), filter to MYS/IDN
+and three indicators — total GHG emissions excluding LULUCF
+(Mt CO2e, AR5), forest area (% of land), and the crop production
+index — then melt long and pivot to a clean (Country, Year)
+year-indexed table saved as cleaned_wdi_data.csv.
+
+Modelling (phase2_model.py). Per-country quadratic OLS of GHG on
+year (numpy.polyfit, deg=2), chosen over a linear specification
+(under-fits the late-2000s acceleration in Indonesia) and over
+ARIMA (insufficient annual observations for stable hyperparameter
+search and far less interpretable to a reinsurance committee). We
+also fit a single-variable sensitivity of the crop production
+index on GHG to drive the stress test. All outputs are serialised
+to model_metrics.json.
+
+Dashboard (app.py). Streamlit is the core delivery tool — judges
+and the client can manipulate scenarios live rather than read a
+static PDF. The simulator exposes country, 2030 GHG stress (0–50%),
+parametric adoption rate (0–100%), agricultural-GDP exposure, and
+an Advanced Actuarial Assumptions expander (loss intensity per
+crop-index point, parametric payout efficiency).
+
+
+----------------------------------------------------------------
+3. TESTING & VALIDATION
+----------------------------------------------------------------
+Out-of-sample backtest. We deliberately held out 2024 — the most
+recent year with realised GHG values — trained the model strictly
+on 1970–2023, and compared the 2024 prediction against actuals:
+
+    Malaysia  : actual 332.17 Mt vs predicted 349.97 Mt — MAPE 5.36%
+    Indonesia : actual 1,323.78 Mt vs predicted 1,183.74 Mt — MAPE 10.58%
+
+A sub-6% MAPE on Malaysia is strong for a single-variable trend
+model, and the errors point in opposite directions across the two
+countries, evidencing no systematic forecast bias.
+
+Correlation validation. On the 33-year overlap, Pearson correlation
+between greenhouse-gas intensity and the Crop Production Index is
++0.978 for Malaysia and +0.972 for Indonesia, with forest cover
+loading negatively on both at roughly -0.90. This is the empirical
+anchor of the parametric thesis: a structural climate–agriculture
+linkage exists in the data and is monetisable through index triggers.
+
+Three improvements during testing: (i) replaced an initial linear
+specification with quadratic after residual diagnostics; (ii)
+standardised the train cut-off to 2023 so MAPE is comparable across
+countries; (iii) externalised model outputs to JSON so the dashboard
+is decoupled from re-training.
+
+Major technical challenge solved. The handbook's referenced
+indicator code "EN.ATM.GHGT.KT.CE" does not exist in the supplied
+SDMX wide file. We grepped the indicator dictionary, identified
+the correct series — WB_WDI_EN_GHG_ALL_MT_CE_AR5 (Total GHG
+excl. LULUCF, Mt CO2e under AR5) — and verified that this series
+ships with 2024 actuals. That single discovery is what unlocked
+our entire out-of-sample validation strategy.
+
+
+----------------------------------------------------------------
+4. SUCCESS & COMPLETION OF SOLUTION
+----------------------------------------------------------------
+Our deliverables address every requirement in the brief:
+
+  - Significant climate indicators identified and statistically
+    justified (correlation evidence above).
+  - Predictive model for a climate indicator built, with
+    transparent assumptions, pre-processing, validation method,
+    and discussion of implications.
+  - Climate–insurance linkage analysed; Malaysia vs Indonesia
+    comparison delivered both quantitatively (sensitivity gap) and
+    qualitatively (different volatility regimes).
+  - Mitigation strategy proposed (parametric reinsurance) and
+    operationalised as a live stress test rather than a slide.
+  - Actionable risk-management recommendations for the client.
+
+2030 stress-test findings. Under a +20% GHG stress and 40%
+parametric adoption (defaults), the simulator shows parametric
+cover absorbing roughly 34% of the cumulative agri-GDP loss along
+the 2024–2030 path; pushing adoption to 80% absorbs ~68%. The
+takeaway for the client is that even partial adoption converts an
+unhedged tail into an underwritable, capital-efficient line.
+
+Limitations honestly disclosed. WDI data is annual and macro,
+which is fine for thesis-level calibration but too coarse for
+production trigger pricing. Loss intensity (0.6% of agri-GDP per
+crop-index point) is a stylised assumption disclosed in the
+dashboard; the +0.978 correlation reflects co-trending with
+development, not strict causation. These limits do not weaken
+the thesis — they define the boundary between proof-of-concept
+and a productionised parametric programme.
+
+
+----------------------------------------------------------------
+5. SCALABILITY / NEXT STEPS
+----------------------------------------------------------------
+The pipeline is deliberately country-agnostic: extending coverage
+to Vietnam, the Philippines, and Thailand requires only a country-
+code parameter change, no re-engineering. The same code runs for
+any country with WDI coverage.
+
+Real-world industry adoption path:
+
+  1. Replace WDI macro indicators with IoT ground-station weather
+     feeds and Sentinel-2 NDVI satellite imagery to calibrate
+     triggers at sub-district granularity, collapsing basis risk
+     to a level commercial cedants will accept.
+  2. Pilot a parametric paddy/palm cover with one Malaysian and
+     one Indonesian agri-cooperative to validate willingness-to-pay
+     and refine trigger thresholds against realised yields.
+  3. Embed stress-test outputs into the client's ICAAP under
+     BNM and OJK climate-risk stress-testing guidance, turning
+     the simulator into a regulatory submission asset.
+  4. Federate the model across the client's regional offices,
+     using the JSON metrics layer as a single source of truth so
+     pricing, capital, and ESG reporting all consume the same
+     calibration.
+
+Future improvements for actuarial practice. Move from single-
+equation OLS to a multivariate VAR or Bayesian hierarchical
+framework, fold in temperature anomaly and rainfall variability
+as additional regressors, and integrate scenario sets aligned
+with NGFS climate pathways so the client's stress tests are
+directly comparable to peer reinsurers'.

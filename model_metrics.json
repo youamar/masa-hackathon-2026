@@ -1,0 +1,121 @@
+{
+  "correlation": {
+    "MYS": {
+      "n_years": 33,
+      "matrix": {
+        "GHG_Emissions_MtCO2e": {
+          "GHG_Emissions_MtCO2e": 1.0,
+          "Forest_Area_PctLand": -0.9089,
+          "Crop_Production_Index": 0.9781
+        },
+        "Forest_Area_PctLand": {
+          "GHG_Emissions_MtCO2e": -0.9089,
+          "Forest_Area_PctLand": 1.0,
+          "Crop_Production_Index": -0.9007
+        },
+        "Crop_Production_Index": {
+          "GHG_Emissions_MtCO2e": 0.9781,
+          "Forest_Area_PctLand": -0.9007,
+          "Crop_Production_Index": 1.0
+        }
+      },
+      "ghg_vs_crop": 0.9780895670838873,
+      "forest_vs_crop": -0.9006609406832995
+    },
+    "IDN": {
+      "n_years": 33,
+      "matrix": {
+        "GHG_Emissions_MtCO2e": {
+          "GHG_Emissions_MtCO2e": 1.0,
+          "Forest_Area_PctLand": -0.8944,
+          "Crop_Production_Index": 0.9721
+        },
+        "Forest_Area_PctLand": {
+          "GHG_Emissions_MtCO2e": -0.8944,
+          "Forest_Area_PctLand": 1.0,
+          "Crop_Production_Index": -0.8991
+        },
+        "Crop_Production_Index": {
+          "GHG_Emissions_MtCO2e": 0.9721,
+          "Forest_Area_PctLand": -0.8991,
+          "Crop_Production_Index": 1.0
+        }
+      },
+      "ghg_vs_crop": 0.9721253659425607,
+      "forest_vs_crop": -0.8991250032420712
+    }
+  },
+  "validation_2024": {
+    "MYS": {
+      "actual": 332.1668,
+      "predicted": 349.97317015807494,
+      "abs_error": 17.806370158074913,
+      "pct_error": 5.360671252537855,
+      "mape": 5.360671252537855,
+      "train_rmse": 15.238586918196294,
+      "train_n": 54
+    },
+    "IDN": {
+      "actual": 1323.7779,
+      "predicted": 1183.7380937281996,
+      "abs_error": -140.03980627180044,
+      "pct_error": -10.578799228465776,
+      "mape": 10.578799228465776,
+      "train_rmse": 30.86574150881357,
+      "train_n": 54
+    }
+  },
+  "projection_2030": {
+    "MYS": {
+      "baseline_path": {
+        "2024": 349.97317015807494,
+        "2025": 359.2977285873494,
+        "2026": 368.7327636933478,
+        "2027": 378.2782754760992,
+        "2028": 387.93426393557456,
+        "2029": 397.7007290717738,
+        "2030": 407.5776708847261
+      },
+      "baseline_2030": 407.5776708847261,
+      "poly_coefs_high_to_low": [
+        0.0552383383649719,
+        -214.33547361048807,
+        207876.9205319628
+      ]
+    },
+    "IDN": {
+      "baseline_path": {
+        "2024": 1183.7380937281996,
+        "2025": 1219.136480754707,
+        "2026": 1255.1318037367892,
+        "2027": 1291.7240626735147,
+        "2028": 1328.9132575651165,
+        "2029": 1366.699388412293,
+        "2030": 1405.082455214113
+      },
+      "baseline_2030": 1405.082455214113,
+      "poly_coefs_high_to_low": [
+        0.29846797751592774,
+        -1173.0984539352296,
+        1152838.2553983436
+      ]
+    }
+  },
+  "model": "Quadratic OLS on Year (numpy.polyfit deg=2)",
+  "sensitivity": {
+    "MYS": {
+      "slope_crop_per_MtGHG": 0.2587653132470891,
+      "intercept": 28.432513175949406,
+      "crop_idx_pts_per_1pct_ghg": 0.38061071729710966,
+      "mean_ghg": 147.08722452830187,
+      "mean_crop": 66.49358490566037
+    },
+    "IDN": {
+      "slope_crop_per_MtGHG": 0.1010030382700014,
+      "intercept": 10.948841372924445,
+      "crop_idx_pts_per_1pct_ghg": 0.5077021523084915,
+      "mean_ghg": 502.66027735849065,
+      "mean_crop": 61.71905660377357
+    }
+  }
+}
